@@ -1,7 +1,6 @@
 from tkinter import Frame, Scrollbar, Label, Text, LEFT, WORD, RIGHT, Y, END, Button, Tk
 import translator
 
-
 window = Tk()
 window.title('Axiao Google Translate')
 window.geometry('650x600')
@@ -37,16 +36,61 @@ t_ed.configure(font=("Times New Roman", 12))
 t_ed.pack()
 
 
-def translate():
+def translate_en2ch():
     text = t_org.get('0.0', END).replace('\n', ' ')
     result = translator.translate(text, "zh-CN", "en")
     t_ed.delete('1.0', END)
     t_ed.insert(END, result)
 
 
+def translate_ch2en():
+    text = t_org.get('0.0', END).replace('\n', ' ')
+    result = translator.translate(text, "en", "zh-CH")
+    print(text)
+    print(result)
+    t_ed.delete('1.0', END)
+    t_ed.insert(END, result)
+
+
+def translate_en2ch_clip():
+    text = window.clipboard_get().replace('\n', ' ')
+    t_org.delete('1.0', END)
+    t_org.insert(END, text)
+    result = translator.translate(text, "zh-CN", "en")
+    t_ed.delete('1.0', END)
+    t_ed.insert(END, result)
+
+
+def translate_ch2en_clip():
+    text = window.clipboard_get().replace('\n', ' ')
+    t_org.delete('1.0', END)
+    t_org.insert(END, text)
+    result = translator.translate(text, "en", "zh-CH")
+    t_ed.delete('1.0', END)
+    t_ed.insert(END, result)
+
+
+def wrap():
+    text_org = t_org.get('0.0', END)
+    text_ed = t_ed.get('0.0', END)
+    t_org.delete('1.0', END)
+    t_org.insert(END, text_ed)
+    t_ed.delete('1.0', END)
+    t_ed.insert(END, text_org)
+
+
 # 按钮
-b_en2ch = Button(f_btn, text='英 to 中', width=10, height=1, command=translate)
-b_en2ch.pack()
+b_en2ch = Button(f_btn, text='英 to 汉', width=10, height=1, command=translate_en2ch)
+b_en2ch.pack(side=LEFT)
+b_en2ch_clip = Button(f_btn, text='英 to 汉（剪切板）', width=20, height=1, command=translate_en2ch_clip)
+b_en2ch_clip.pack(side=LEFT)
+b_wrap = Button(f_btn, text='交换', width=10, height=1, command=wrap)
+b_wrap.pack(side=LEFT)
+b_ch2en = Button(f_btn, text='汉 to 英', width=10, height=1, command=translate_ch2en)
+b_ch2en.pack(side=LEFT)
+b_ch2en_clip = Button(f_btn, text='汉 to 英（剪切板）', width=20, height=1, command=translate_ch2en_clip)
+b_ch2en_clip.pack(side=LEFT)
 
 
 window.mainloop()
+
