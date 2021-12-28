@@ -1,35 +1,46 @@
 from tkinter import *
 
-window = Tk()
 
-window.title('Google Translate')
+class Translator:
+    def __init__(self):
+        self.window = Tk()
+        self.window.title('Google Translate')
+        self.window.geometry('500x300')
 
-window.geometry('500x300')
+        # 三个frame
+        self.f_org = Frame(self.window)
+        self.f_org.pack()
+        self.f_btn = Frame(self.window)
+        self.f_btn.pack()
+        self.f_ed = Frame(self.window)
+        self.f_ed.pack()
 
-# 两个frame
-f_org = Frame(window)
-f_ed = Frame(window)
+        # 两个scroller
+        scl_org = Scrollbar(self.f_org)
+        scl_ed = Scrollbar(self.f_ed)
 
-# 两个scroller
-scl_org = Scrollbar(f_org)
-scl_ed = Scrollbar(f_ed)
+        # 原文文本框
+        self.label_org = Label(self.f_org, text="原文")
+        self.label_org.pack(side=LEFT)
+        self.t_org = Text(self.f_org, height=5, wrap=WORD)
+        self.t_org.pack()
 
-# 原文文本框
-label_org = Label(f_org, text="Label")
-label_org.pack(side=LEFT)
-t_org = Text(f_org, height=5, wrap=WORD)
-t_org.pack()
-t_ed = Text(f_ed, height=5, wrap=WORD)
-t_ed.pack()
+        # 按钮
+        self.b_en2ch = Button(self.f_btn, text='英 to 中', width=10, height=1, command=self.translate())
+        self.b_en2ch.pack()
+
+        # 译文文本框
+        self.label_org = Label(self.f_ed, text="译文")
+        self.label_org.pack(side=LEFT)
+        self.t_ed = Text(self.f_ed, height=5, wrap=WORD)
+        self.t_ed.pack()
+
+        self.window.mainloop()
+
+    def translate(self):
+        var = self.t_org.get('1.0', '6.0')
+        self.t_ed.insert(END, var)
 
 
-def translate():
-    var = t_org.get('1.0', '6.0')
-    t_ed.insert(END, var)
+translator = Translator()
 
-
-b_en2ch = Button(window, text='英 to 中', width=10,
-                 height=1, command=translate)
-b_en2ch.pack()
-
-window.mainloop()
