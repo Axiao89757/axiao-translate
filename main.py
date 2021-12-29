@@ -1,6 +1,27 @@
 from tkinter import Frame, Scrollbar, Label, Text, LEFT, WORD, RIGHT, Y, END, Button, Tk
-import translator
+import re
+import html
+from urllib import parse
+from requests import get
 
+# 翻译接口
+GOOGLE_TRANSLATE_URL = 'http://translate.google.cn/m?q=%s&tl=%s&sl=%s'
+
+
+def translate(text, to_language="auto", text_language="auto"):
+    text = parse.quote(text)
+    url = GOOGLE_TRANSLATE_URL % (text, to_language, text_language)
+    response = get(url)
+    data = response.text
+    expr = r'(?s)class="(?:t0|result-container)">(.*?)<'
+    result = re.findall(expr, data)
+    if len(result) == 0:
+        return ""
+
+    return html.unescape(result[0])
+
+
+# 窗口程序
 window = Tk()
 window.title('Axiao Google Translate')
 window.geometry('650x600')
@@ -39,14 +60,14 @@ t_ed.pack()
 
 def translate_en2ch():
     text = t_org.get('0.0', END).replace('\n', ' ')
-    result = translator.translate(text, "zh-CN", "en")
+    result = translate(text, "zh-CN", "en")
     t_ed.delete('1.0', END)
     t_ed.insert(END, result)
 
 
 def translate_ch2en():
     text = t_org.get('0.0', END).replace('\n', ' ')
-    result = translator.translate(text, "en", "zh-CH")
+    result = translate(text, "en", "zh-CH")
     print(text)
     print(result)
     t_ed.delete('1.0', END)
@@ -57,7 +78,7 @@ def translate_en2ch_clip():
     text = window.clipboard_get().replace('\n', ' ')
     t_org.delete('1.0', END)
     t_org.insert(END, text)
-    result = translator.translate(text, "zh-CN", "en")
+    result = translate(text, "zh-CN", "en")
     t_ed.delete('1.0', END)
     t_ed.insert(END, result)
 
@@ -66,7 +87,7 @@ def translate_ch2en_clip():
     text = window.clipboard_get().replace('\n', ' ')
     t_org.delete('1.0', END)
     t_org.insert(END, text)
-    result = translator.translate(text, "en", "zh-CH")
+    result = translate(text, "en", "zh-CH")
     t_ed.delete('1.0', END)
     t_ed.insert(END, result)
 
@@ -92,6 +113,4 @@ b_ch2en.pack(side=LEFT)
 b_ch2en_clip = Button(f_btn, text='汉 to 英（剪切板）', width=20, height=1, command=translate_ch2en_clip)
 b_ch2en_clip.pack(side=LEFT)
 
-
 window.mainloop()
-

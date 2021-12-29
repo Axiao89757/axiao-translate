@@ -1,7 +1,7 @@
 import re
 import html
 from urllib import parse
-import requests
+from requests import get
 
 GOOGLE_TRANSLATE_URL = 'http://translate.google.cn/m?q=%s&tl=%s&sl=%s'
 
@@ -10,7 +10,7 @@ def translate(text, to_language="auto", text_language="auto"):
 
     text = parse.quote(text)
     url = GOOGLE_TRANSLATE_URL % (text,to_language,text_language)
-    response = requests.get(url)
+    response = get(url)
     data = response.text
     expr = r'(?s)class="(?:t0|result-container)">(.*?)<'
     result = re.findall(expr, data)
