@@ -26,7 +26,7 @@ window = Tk()
 height = window.winfo_screenheight()
 width = window.winfo_screenwidth()
 window.title('Axiao Google Translate')
-window.geometry(str(int(0.32*width))+'x'+str(int(0.5*height)))
+window.geometry(str(int(0.32 * width)) + 'x' + str(int(0.5 * height)))
 window.iconbitmap('icon.ico')
 window.wm_attributes('-topmost', 1)
 
@@ -56,7 +56,7 @@ t_org.pack()
 
 # 译文文本框
 Label(f_ed, text="译文").pack(side=LEFT)
-t_ed = Text(f_ed, height=12, )
+t_ed = Text(f_ed, height=12)
 scl_ed.pack(side=RIGHT, fill=Y)  # side是滚动条放置的位置，上下左右。fill是将滚动条沿着y轴填充
 scl_ed.config(command=t_ed.yview)  # 将文本框关联到滚动条上，滚动条滑动，文本框跟随滑动
 t_ed.config(yscrollcommand=scl_ed.set)  # 将滚动条关联到文本框
@@ -66,6 +66,8 @@ t_ed.pack()
 
 def translate_en2ch():
     text = t_org.get('0.0', END).replace('\n', ' ')
+    t_org.delete('1.0', END)
+    t_org.insert(END, text)
     result = translate(text, "zh-CN", "en")
     t_ed.delete('1.0', END)
     t_ed.insert(END, result)
@@ -73,9 +75,9 @@ def translate_en2ch():
 
 def translate_ch2en():
     text = t_org.get('0.0', END).replace('\n', ' ')
+    t_org.delete('1.0', END)
+    t_org.insert(END, text)
     result = translate(text, "en", "zh-CH")
-    print(text)
-    print(result)
     t_ed.delete('1.0', END)
     t_ed.insert(END, result)
 
