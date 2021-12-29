@@ -4,6 +4,7 @@ import translator
 window = Tk()
 window.title('Axiao Google Translate')
 window.geometry('650x600')
+window.wm_attributes('-topmost', 1)
 
 # 三个frame
 f_org = Frame(window)
