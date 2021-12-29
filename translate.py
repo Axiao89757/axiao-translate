@@ -114,15 +114,17 @@ def wrap():
 
 
 # 按钮
+b_en2ch_clip = Button(f_btn, text='英to汉(剪切板)', width=13, height=1, fg="white", bg="ForestGreen",
+                      command=translate_en2ch_clip)
+b_en2ch_clip.pack(side=LEFT)
 b_en2ch = Button(f_btn, text='英to汉', width=8, height=1, command=translate_en2ch)
 b_en2ch.pack(side=LEFT)
-b_en2ch_clip = Button(f_btn, text='英to汉(剪切板)', width=13, height=1, command=translate_en2ch_clip)
-b_en2ch_clip.pack(side=LEFT)
 b_wrap = Button(f_btn, text='交换', width=7, height=1, command=wrap)
 b_wrap.pack(side=LEFT)
 b_ch2en = Button(f_btn, text='汉to英', width=8, height=1, command=translate_ch2en)
 b_ch2en.pack(side=LEFT)
-b_ch2en_clip = Button(f_btn, text='汉to英(剪切板)', width=13, height=1, command=translate_ch2en_clip)
+b_ch2en_clip = Button(f_btn, text='汉to英(剪切板)', width=13, height=1,fg="white", bg="ForestGreen",
+                      command=translate_ch2en_clip)
 b_ch2en_clip.pack(side=LEFT)
 
 window.mainloop()
