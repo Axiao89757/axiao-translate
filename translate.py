@@ -44,6 +44,8 @@ scl_ed = Scrollbar(f_ed)
 
 # 初始原文是英文
 org_is_en = True
+t_list_org = []
+t_list_ed = []
 
 # 原文文本框
 Label(f_org, text="原文").pack(side=LEFT)
@@ -123,8 +125,12 @@ b_wrap = Button(f_btn, text='交换', width=7, height=1, command=wrap)
 b_wrap.pack(side=LEFT)
 b_ch2en = Button(f_btn, text='汉to英', width=8, height=1, command=translate_ch2en)
 b_ch2en.pack(side=LEFT)
-b_ch2en_clip = Button(f_btn, text='汉to英(剪切板)', width=13, height=1,fg="white", bg="ForestGreen",
+b_ch2en_clip = Button(f_btn, text='汉to英(剪切板)', width=13, height=1, fg="white", bg="ForestGreen",
                       command=translate_ch2en_clip)
 b_ch2en_clip.pack(side=LEFT)
+b_last = Button(f_btn, text='<', width=3, height=1, command=translate_en2ch)
+b_last.pack(side=LEFT)
+b_next = Button(f_btn, text='>', width=3, height=1, command=translate_en2ch)
+b_next.pack(side=LEFT)
 
 window.mainloop()
