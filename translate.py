@@ -1,6 +1,7 @@
 from tkinter import *
 import re
 import html
+from tkinter.font import Font
 from urllib import parse
 from requests import get
 
@@ -105,12 +106,14 @@ def translate_en2ch_clip():
     text = window.clipboard_get().strip().replace('\n', ' ')
     result = translate(text, "zh-CN", "en")
     update_text(text, result)
+    text_list_append(text, result)
 
 
 def translate_ch2en_clip():
     text = window.clipboard_get().strip().replace('\n', ' ')
     result = translate(text, "en", "zh-CH")
     update_text(text, result)
+    text_list_append(text, result)
 
 
 def wrap():
@@ -142,7 +145,7 @@ def right():
 
 
 # 按钮
-b_last = Button(f_btn, text='<', width=3, height=1, command=left, state=DISABLED, fg="white", bg="DarkGray")
+b_last = Button(f_btn, text='<', font=Font(weight="bold"), width=2, height=1, command=left, state=DISABLED, fg="ForestGreen")
 b_last.pack(side=LEFT)
 b_en2ch_clip = Button(f_btn, text='英to汉(剪切板)', width=13, height=1, fg="white", bg="ForestGreen",
                       command=translate_en2ch_clip)
@@ -156,7 +159,7 @@ b_ch2en.pack(side=LEFT)
 b_ch2en_clip = Button(f_btn, text='汉to英(剪切板)', width=13, height=1, fg="white", bg="ForestGreen",
                       command=translate_ch2en_clip)
 b_ch2en_clip.pack(side=LEFT)
-b_next = Button(f_btn, text='>', width=3, height=1, command=right, state=DISABLED, fg="white", bg="DarkGray")
+b_next = Button(f_btn, text='>', font=Font(weight="bold"), width=2, height=1, command=right, state=DISABLED, fg="ForestGreen")
 b_next.pack(side=LEFT)
 
 window.mainloop()
