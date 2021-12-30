@@ -26,17 +26,16 @@ window = Tk()
 height = window.winfo_screenheight()
 width = window.winfo_screenwidth()
 window.title('Axiao Google Translate')
-window.geometry(str(int(0.35 * width)) + 'x' + str(int(0.5 * height)))
+window.geometry(str(int(0.35 * width)) + 'x' + str(int(0.5 * height)) + '+'
+                + str(int(0.6 * width)) + '+' + str(int(0.2 * height)))
 window.iconbitmap('icon.ico')
 window.wm_attributes('-topmost', 1)
 
-# 四个frame
+# 三个frame
 f_org = Frame(window)
 f_org.pack(expand=1)
 f_btn = Frame(window)
 f_btn.pack(expand=1)
-f_ed = Frame(window)
-f_ed.pack(expand=1)
 f_ed = Frame(window)
 f_ed.pack(expand=1)
 
@@ -52,7 +51,7 @@ t_cur_idx = 0
 
 # 原文文本框
 Label(f_org, text="原文").pack(side=LEFT)
-t_org = Text(f_org, height=10, wrap=WORD)
+t_org = Text(f_org, wrap=WORD, height=12)
 scl_org.pack(side=RIGHT, fill=Y)  # side是滚动条放置的位置，上下左右。fill是将滚动条沿着y轴填充
 scl_org.config(command=t_org.yview)  # 将文本框关联到滚动条上，滚动条滑动，文本框跟随滑动
 t_org.config(yscrollcommand=scl_org.set)  # 将滚动条关联到文本框
@@ -61,12 +60,12 @@ t_org.pack()
 
 # 译文文本框
 Label(f_ed, text="译文").pack(side=LEFT)
-t_ed = Text(f_ed, height=10)
+t_ed = Text(f_ed, height=12)
 scl_ed.pack(side=RIGHT, fill=Y)  # side是滚动条放置的位置，上下左右。fill是将滚动条沿着y轴填充
 scl_ed.config(command=t_ed.yview)  # 将文本框关联到滚动条上，滚动条滑动，文本框跟随滑动
 t_ed.config(yscrollcommand=scl_ed.set)  # 将滚动条关联到文本框
 t_ed.configure(font=("Times New Roman", 12))
-t_ed.pack()
+t_ed.pack(expand=1)
 
 
 def text_list_append(text_org, text_ed):
