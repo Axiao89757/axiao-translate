@@ -7,3 +7,9 @@
 
 # 注意
 请关闭全局vpn翻墙
+
+# 我的备忘
+打包命令
+```bash
+pyinstaller ./src/main.py -i ./src/resources/icon.ico -w -n 笑翻 -F
+```
