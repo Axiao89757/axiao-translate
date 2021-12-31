@@ -18,8 +18,8 @@ class EveryAnalysisWindow:
         self.f_ed = Frame(self.root)
 
         # 标签
-        self.l_org = Label(self.f_org, text="原文")
-        self.l_ed = Label(self.f_ed, text="译文")
+        self.l_org = Label(self.f_org, text="英语")
+        self.l_ed = Label(self.f_ed, text="汉语")
         self.l_site = Label(self.f_count, textvariable=self.cur_inx,
                             font=Font(weight="bold"))
         self.l_site_sep = Label(self.f_count, text="/",
@@ -49,7 +49,7 @@ class EveryAnalysisWindow:
     def set_window(self):
         self.root.title('Every Analysis')
         self.root.geometry(self.size_and_pos)
-        self.root.iconbitmap('icon.ico')
+        self.root.iconbitmap('resources/icon.ico')
         self.root.wm_attributes('-topmost', 1)
 
         self.f_org.pack(expand=1)

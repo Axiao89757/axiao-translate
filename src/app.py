@@ -1,8 +1,6 @@
 from tkinter import *
 from tkinter.font import Font
-import every_analysis_window as evr_anl_wd
-import translate
-import utils
+import translate, utils, every_analysis_window as evr_anl_wd
 
 
 class App:
@@ -61,7 +59,7 @@ class App:
         size_and_pos = str(int(0.35 * self.width)) + 'x' + str(int(0.5 * self.height)) + '+' + str(
             int(0.6 * self.width)) + '+' + str(int(0.2 * self.height))
         self.root.geometry(size_and_pos)
-        self.root.iconbitmap('icon.ico')
+        self.root.iconbitmap('resources/icon.ico')
         self.root.wm_attributes('-topmost', 1)
 
         self.f_org.pack(expand=1)
