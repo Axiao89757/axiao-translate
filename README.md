@@ -12,3 +12,5 @@
 ```bash
 pyinstaller ./src/main.py -i ./src/resources/icon.ico -w -n 笑翻 -F
 ```
+bug记录
+1. 逐行分析，i.e.解析错误
