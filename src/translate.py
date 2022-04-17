@@ -18,3 +18,4 @@ def translate(text, to_language="auto", text_language="auto"):
         return ""
 
     return html.unescape(result[0])
+

@@ -23,3 +23,21 @@ def cut_sentences(content):
                 sentences.append(tmp_char)
                 tmp_char = ''
     return sentences
+
+
+# 动态获取窗口长度
+def adapt_size(text):
+    widths = ['150x100', '280x150', '410x200', '540x250', '590x250', '650x300']
+    if len(text) >= 500:
+        return widths[5]
+    elif len(text) >= 400:
+        return widths[4]
+    elif len(text) >= 300:
+        return widths[3]
+    elif len(text) >= 200:
+        return widths[2]
+    elif len(text) >= 100:
+        return widths[1]
+    else:
+        return widths[0]
+
