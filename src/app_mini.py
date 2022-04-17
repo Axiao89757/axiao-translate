@@ -38,6 +38,7 @@ class AppMini:
         self.root.title('笑翻mini')
         self.root.geometry('300x200')
         self.root.iconbitmap('./resources/icon.ico')
+        self.root.state('iconic')
 
         self.f_select.pack(expand=1)
         self.f_ed.pack(expand=1)
