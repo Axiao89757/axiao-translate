@@ -22,4 +22,4 @@ bug记录
 
 提升项
 1. 笑翻mini关闭or退出缩小至系统托盘，参考https://blog.csdn.net/wodeyan001/article/details/82497564
-2. 
+2. 为笑翻mini翻译功能的启停添加快捷键
