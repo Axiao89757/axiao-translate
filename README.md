@@ -23,3 +23,4 @@ bug记录
 提升项
 1. 笑翻mini关闭or退出缩小至系统托盘，参考https://blog.csdn.net/wodeyan001/article/details/82497564
 2. 为笑翻mini翻译功能的启停添加快捷键
+3. 笑翻mini交互：触发翻译后立刻弹出窗口并提示加载中... https://blog.csdn.net/weixin_45447477/article/details/115253715?spm=1001.2101.3001.6650.1&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-1.pc_relevant_default&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-1.pc_relevant_default&utm_relevant_index=2 或者 使用进度条
