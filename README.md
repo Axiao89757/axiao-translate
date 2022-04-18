@@ -19,6 +19,7 @@ pyinstaller ./src/main.py -i ./src/resources/icon.ico -w -n 笑翻 -F
 bug记录
 1. 逐行分析，i.e.解析错误
 2. 增加置顶、不置顶切换功能
+3. 笑翻mini位置调整有问题，会出现跳动，调整位置的代码应该方队位置
 
 提升项
 1. 笑翻mini关闭or退出缩小至系统托盘，参考https://blog.csdn.net/wodeyan001/article/details/82497564
