@@ -1,3 +1,5 @@
+from pynput.keyboard import Key, Controller
+
 # 分割句子
 def cut_sentences(content):
     # 结束符号，包含中文和英文的
@@ -26,17 +28,28 @@ def cut_sentences(content):
 
 
 # 动态获取窗口长度
-def adapt_size(text):
-    widths = ['200', '500', '500', '590', '650']
+def adapt_size(text, format):
+    widths = ['200', '400', '500', '590', '650']
     heights = ['70', '100', '200', '250', '300']
+    num = str(70 + text.count('\n') * 25)
     if len(text) >= 300:
-        return widths[4], heights[4]
+        return widths[4], heights[4] if format else num
     elif len(text) >= 200:
-        return widths[3], heights[3]
+        return widths[3], heights[3] if format else num
     elif len(text) >= 100:
-        return widths[2], heights[2]
+        return widths[2], heights[2] if format else num
     elif len(text) >= 10:
-        return widths[1], heights[1]
+        return widths[1], heights[1] if format else num
     else:
-        return widths[0], heights[0]
+        return widths[0], heights[0] if format else num
+
+
+
+# 执行复制操作
+def do_ctrl_c():
+    kb = Controller()
+    kb.press(Key.ctrl)
+    kb.press("c")
+    kb.release(Key.ctrl)
+    kb.release("c")
 
