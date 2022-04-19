@@ -27,15 +27,16 @@ def cut_sentences(content):
 
 # 动态获取窗口长度
 def adapt_size(text):
-    widths = ['200x70', '500x100', '500x200', '590x250', '650x300']
+    widths = ['200', '500', '500', '590', '650']
+    heights = ['70', '100', '200', '250', '300']
     if len(text) >= 300:
-        return widths[4]
+        return widths[4], heights[4]
     elif len(text) >= 200:
-        return widths[3]
+        return widths[3], heights[3]
     elif len(text) >= 100:
-        return widths[2]
+        return widths[2], heights[2]
     elif len(text) >= 10:
-        return widths[1]
+        return widths[1], heights[1]
     else:
-        return widths[0]
+        return widths[0], heights[0]
 

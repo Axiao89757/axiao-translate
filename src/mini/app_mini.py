@@ -70,19 +70,26 @@ class AppMini:
     def translate_en2ch_clip(self, key):
         if str(key) == r"'\x03'":
             loading = '翻译中……'
-            pos = Controller().position
             self.update_text(loading)
-            self.root.state('normal')
-            self.root.wm_attributes('-topmost', 1)
-            self.root.wm_attributes('-topmost', 0)
-            self.root.geometry(utils.adapt_size(loading) + '+' + str(pos[0] + 10) + '+' + str(pos[1] + 10))
+            self.pop_win()
+            self.locate(loading)
             text = self.root.clipboard_get().strip().replace('\n', ' ')
             print(text)
             if len(text) == 0:
                 return
             result = translate.translate(text, "zh-CN", "en")
             self.update_text(result)
-            self.root.geometry(utils.adapt_size(result))
+            self.locate(result)
+
+    def pop_win(self):
+        self.root.state('normal')
+        self.root.wm_attributes('-topmost', 1)
+        self.root.wm_attributes('-topmost', 0)
+
+    def locate(self, text):
+        pos = Controller().position
+        size = utils.adapt_size(text)
+        self.root.geometry('x'.join(size) + '+' + str(pos[0] - int(int(size[0]) / 2)) + '+' + str(pos[1] + 20))
 
     def on_off(self):
         num = self.var.get()
