@@ -1,4 +1,4 @@
-import app_mini
+from mini import app_mini
 
 root = app_mini.Tk()
 app_mini.AppMini(root)
