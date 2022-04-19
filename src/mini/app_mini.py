@@ -72,10 +72,10 @@ class AppMini:
             loading = '翻译中……'
             pos = Controller().position
             self.update_text(loading)
-            self.root.geometry(utils.adapt_size(loading) + '+' + str(pos[0] + 10) + '+' + str(pos[1] + 10))
             self.root.state('normal')
             self.root.wm_attributes('-topmost', 1)
             self.root.wm_attributes('-topmost', 0)
+            self.root.geometry(utils.adapt_size(loading) + '+' + str(pos[0] + 10) + '+' + str(pos[1] + 10))
             text = self.root.clipboard_get().strip().replace('\n', ' ')
             print(text)
             if len(text) == 0:
