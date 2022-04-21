@@ -26,3 +26,4 @@ bug记录
 2. 笑翻mini设置快速翻译模式，即选择完词语则马上翻译
 3. 笑翻mini增加多语言翻译
 4. 笑翻mini通过控制鼠标点击弹窗，即可完成弹出弹窗并且聚焦在笑翻上
+5. 将icon保存在code中 https://blog.csdn.net/weixin_41596280/article/details/105420093
