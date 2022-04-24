@@ -29,3 +29,4 @@ bug记录
 5. 将icon保存在code中 https://blog.csdn.net/weixin_41596280/article/details/105420093
 6. 笑翻mini翻译异常捕获
 7. 增加置顶、不置顶切换功能，并添加快捷键
+8. 笑翻mini大小调整优化
