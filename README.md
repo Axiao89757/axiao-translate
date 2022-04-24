@@ -19,7 +19,7 @@ pyinstaller ./src/main.py -i ./src/resources/icon.ico -w -n 笑翻 -F
 ```
 bug记录
 1. 逐行分析，i.e.解析错误
-2. 增加置顶、不置顶切换功能
+2. 笑翻mini，F8快捷键会跳出两次提示框
 
 提升项
 1. 笑翻mini关闭or退出缩小至系统托盘，参考https://blog.csdn.net/wodeyan001/article/details/82497564
@@ -27,3 +27,5 @@ bug记录
 3. 笑翻mini增加多语言翻译
 4. 笑翻mini通过控制鼠标点击弹窗，即可完成弹出弹窗并且聚焦在笑翻上
 5. 将icon保存在code中 https://blog.csdn.net/weixin_41596280/article/details/105420093
+6. 笑翻mini翻译异常捕获
+7. 增加置顶、不置顶切换功能，并添加快捷键
