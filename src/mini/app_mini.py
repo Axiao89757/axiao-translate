@@ -51,7 +51,7 @@ class AppMini:
     def set_window(self):
         self.root.title('笑翻mini')
         self.root.geometry('300x200')
-        self.root.iconbitmap('./resources/icon.ico')
+        # self.root.iconbitmap('./resources/icon.ico')
         self.root.state('iconic')
 
         self.f_select.pack(expand=1)
@@ -132,6 +132,7 @@ class AppMini:
         result = translate.translate(text, "zh-CN", "en")
         self.update_text(result)
         self.locate(result)
+        self.focus()
 
     def pop_win(self):
         self.root.state('normal')
@@ -139,9 +140,19 @@ class AppMini:
         self.root.wm_attributes('-topmost', 0)
 
     def locate(self, text):
-        pos = Controller().position
+        mouse_controller = Controller()
+        pos = mouse_controller.position
         size = utils.adapt_size(text, self.line_on_off_val.get())
-        self.root.geometry('x'.join(size) + '+' + str(pos[0] - int(int(size[0]) / 2)) + '+' + str(pos[1] + 20))
+        x = pos[0] - int(int(size[0]) / 2)
+        y = pos[1] + 20
+        self.root.geometry('x'.join(size) + '+' + str(x) + '+' + str(y))
+
+    def focus(self):
+        mouse_controller = Controller()
+        pos = mouse_controller.position
+        mouse_controller.position = (pos[0], pos[1] + 30)
+        mouse_controller.press(mouse.Button.left)
+        mouse_controller.release(mouse.Button.left)
 
     def on_off(self):
         if not self.on_off_val.get():
