@@ -32,10 +32,10 @@ pyinstaller ./src/main.py -i ./src/resources/icon.ico -w -n 笑翻 -F
 
 ### 笑翻mini
 -[ ] 笑翻mini关闭or退出缩小至系统托盘，参考https://blog.csdn.net/wodeyan001/article/details/82497564
--[ ]笑翻mini设置快速翻译模式，即选择完词语则马上翻译
+-[ ] 笑翻mini设置快速翻译模式，即选择完词语则马上翻译
 -[ ] 笑翻mini增加多语言翻译
 -[x] 笑翻mini通过控制鼠标点击弹窗，即可完成弹出弹窗并且聚焦在笑翻上
 -[ ] 笑翻mini大小调整优化
--[ ] 笑翻mini提供译后自动复制开关
+-[x] 笑翻mini提供译后自动复制开关
 -[ ] 笑翻mini翻译异常捕获
 

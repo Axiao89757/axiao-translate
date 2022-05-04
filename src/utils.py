@@ -1,4 +1,6 @@
 from pynput.keyboard import Key, Controller
+import pyperclip
+from ctypes import windll
 
 # 分割句子
 def cut_sentences(content):
@@ -53,3 +55,17 @@ def do_ctrl_c():
     kb.release(Key.ctrl)
     kb.release("c")
 
+
+def write_to_clipboard(text):
+    pyperclip.copy(text)
+
+
+def delete_clipboard():
+    if windll.user32.OpenClipboard(None):  # 打开剪切板
+        windll.user32.EmptyClipboard()  # 清空剪切板
+        windll.user32.CloseClipboard()  # 关闭剪切板
+
+
+def recovery_clipboard(text):
+    delete_clipboard()
+    pyperclip.copy(text)

@@ -27,6 +27,11 @@ class AppMini:
         self.line_on_off_val.set(True)
         self.cb_line_on_off = Checkbutton(self.f_select, variable=self.line_on_off_val, text='格式化', onvalue=True, offvalue=False, command=self.line_on_off)
 
+        # 自动复制翻译结果开关
+        self.copy_on_off_val = BooleanVar()
+        self.copy_on_off_val.set(False)
+        self.cb_copy_on_off = Checkbutton(self.f_select, variable=self.copy_on_off_val, text='复制', onvalue=True, offvalue=False, command=self.copy_on_off)
+
         # 滑条
         self.scl_ed = Scrollbar(self.f_ed)
 
@@ -48,6 +53,9 @@ class AppMini:
         self.keyboard_listener_global = None
         self.set_listeners()
 
+        # 其他
+        self.org_clipboard_text = ""  # 保存非笑翻mini复制的剪切板内容
+
     def set_window(self):
         self.root.title('笑翻mini')
         self.root.geometry('300x200')
@@ -61,6 +69,7 @@ class AppMini:
         # 启动开关
         self.cb_on_off.pack(side=LEFT)
         self.cb_line_on_off.pack(side=LEFT)
+        self.cb_copy_on_off.pack(side=LEFT)
 
         # 译文文本框
         self.scl_ed.config(command=self.t_ed.yview)
@@ -98,6 +107,7 @@ class AppMini:
         # print(f"你松开了{key.char if hasattr(key, 'char') else key.name}键")
         if self.translate_ready and key in short_cut:
             if self.press_alt_time is not None and time.time() - self.press_alt_time < 0.5:
+                self.org_clipboard_text = self.root.clipboard_get() if self.root.clipboard_get() else ""  # 保存原来的剪切板内容
                 utils.do_ctrl_c()
                 time.sleep(0.01)  # 解决翻译时读取到的剪切板内容是第二新的，不是最新的
                 self.translate()
@@ -125,14 +135,17 @@ class AppMini:
         self.pop_win()
         self.locate(loading)
         text = self.root.clipboard_get()
+        utils.recovery_clipboard(self.org_clipboard_text)  # 还原由笑翻mini调用ctrl+c造成的剪切板内容垃圾
         text = text.strip().replace('\n', ' ') if self.line_on_off_val.get() else text
         print(text)
         if len(text) == 0:
             return
         result = translate.translate(text, "zh-CN", "en")
         self.update_text(result)
-        self.locate(result)
-        self.focus()
+        self.locate(result)  # 重新定位笑翻min
+        self.focus()  # 聚焦到笑翻mini上来
+        if self.copy_on_off_val.get():
+            utils.write_to_clipboard(result)  # 复制翻译结果
 
     def pop_win(self):
         self.root.state('normal')
@@ -172,5 +185,8 @@ class AppMini:
         result = translate.translate(text, "zh-CN", "en")
         self.update_text(result)
 
+    def copy_on_off(self):
+        if self.copy_on_off_val.get():
+            utils.write_to_clipboard(self.t_ed.get('0.0', END))  # 复制翻译结果
 
 
