@@ -1,6 +1,4 @@
 from pynput.keyboard import Key, Controller
-import pyperclip
-from ctypes import windll
 
 # 分割句子
 def cut_sentences(content):
@@ -30,20 +28,14 @@ def cut_sentences(content):
 
 
 # 动态获取窗口长度
-def adapt_size(text, format):
-    widths = ['200', '400', '500', '590', '650']
-    heights = ['70', '100', '200', '250', '300']
-    num = str(70 + text.count('\n') * 25)
-    if len(text) >= 300:
-        return widths[4], heights[4] if format else num
-    elif len(text) >= 200:
-        return widths[3], heights[3] if format else num
-    elif len(text) >= 100:
-        return widths[2], heights[2] if format else num
-    elif len(text) >= 10:
-        return widths[1], heights[1] if format else num
+def adapt_size(text):
+    widths = ['200', '500', '650']
+    if len(text) > 200:
+        return widths[2], str((int((len(text)-text.count('/n'))/32) + text.count('/n'))*16 + 40)
+    elif len(text) > 10:
+        return widths[1], str((int((len(text)-text.count('/n'))/25) + text.count('/n'))*20 + 40)
     else:
-        return widths[0], heights[0] if format else num
+        return widths[0], str(60)
 
 
 
@@ -56,16 +48,6 @@ def do_ctrl_c():
     kb.release("c")
 
 
-def write_to_clipboard(text):
-    pyperclip.copy(text)
-
-
-def delete_clipboard():
-    if windll.user32.OpenClipboard(None):  # 打开剪切板
-        windll.user32.EmptyClipboard()  # 清空剪切板
-        windll.user32.CloseClipboard()  # 关闭剪切板
-
-
-def recovery_clipboard(text):
-    delete_clipboard()
-    pyperclip.copy(text)
+def recovery_clipboard(tk, text):
+    tk.clipboard_clear()
+    tk.clipboard_append(text)
