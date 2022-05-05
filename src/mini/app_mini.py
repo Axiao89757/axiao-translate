@@ -157,7 +157,6 @@ class AppMini(Tk):
                     and 0.4 > time.time() - self.click_time > 0.1 \
                     and self.mouse_move_judge():
                 self.translate_ready = True
-                print(1)
             # 按下
             if is_press:
                 self.ms_pressed = True
@@ -232,8 +231,6 @@ class AppMini(Tk):
         self.update_text(loading)
         self.pop_win()
         self.locate(loading, relocate=True)
-
-        self.focus()  # 聚焦到笑翻mini上来
         text = self.clipboard_get()
         utils.recovery_clipboard(self, self.org_clipboard_text)  # 还原由笑翻mini调用ctrl+c造成的剪切板内容垃圾
         text = text.strip().replace('\n', ' ') if self.line_on_off_val.get() else text
@@ -255,18 +252,31 @@ class AppMini(Tk):
         self.wm_attributes('-topmost', 0)
 
     def locate(self, text, relocate=False):
+        padding = 20
         pos = self.mouse_controller.position
+        w_width = self.winfo_screenwidth()
+        w_height = self.winfo_screenheight()
         size = utils.adapt_size(text)
+        x = pos[0] - int(int(size[0]) / 2)
+        x = min(max(padding, x), w_width - int(int(size[0]) / 2) - padding)
+        y = pos[1] + 20
+        y = min(max(padding, y), w_height - int(size[1]) - 5 * padding)
+        print('int(size[0]): ', int(size[0]))
+        print('int(size[1]): ', int(size[1]))
+        print('x: ', x)
+        print('y: ', y)
         if relocate:
-            x = pos[0] - int(int(size[0]) / 2)
-            y = pos[1] + 20
             self.geometry('x'.join(size) + '+' + str(x) + '+' + str(y))
-        self.geometry('x'.join(size))
+            # 聚焦到笑翻mini上来
+            self.mouse_controller.position = (x + 30, y + 10)  # 移动鼠标
+            self.mouse_controller.click(mouse.Button.left, 1)  # 点击左键
+        else:
+            self.geometry('x'.join(size))
 
     def focus(self):
         pos = self.mouse_controller.position
-        # 移动鼠标
-        self.mouse_controller.position = (pos[0], pos[1] + self.winfo_height() + 20)
+
+        self.mouse_controller.position = (pos[0], pos[1] + self.winfo_height() + 20) # 移动鼠标
         self.mouse_controller.click(mouse.Button.left, 1)  # 点击左键
 
     def auto_copy(self, text, result):
@@ -282,6 +292,7 @@ class AppMini(Tk):
     def mouse_move_judge(self):
         pos = self.mouse_controller.position
         return abs(pos[0] - self.click_pos[0]) < 3 and abs(pos[1] - self.click_pos[1]) < 3
+
     # ##########check bottom函数##########
     # 翻译总开关
     def on_off(self):
