@@ -8,6 +8,7 @@ from threading import Thread
 
 short_cut = [keyboard.Key.ctrl_l, keyboard.Key.ctrl_r]
 short_cut_on_off = keyboard.Key.f8
+short_cut_fast_model_on_off = keyboard.Key.f9
 
 
 class AppMini(Tk):
@@ -45,7 +46,7 @@ class AppMini(Tk):
         self.fast_on_off_val = BooleanVar()
         self.fast_on_off_val.set(False)
         self.setting_menu.add_checkbutton(label='快速模式', variable=self.fast_on_off_val, onvalue=True, offvalue=False,
-                                          command=self.fast_on_off, selectcolor='green')
+                                          command=self.fast_on_off, selectcolor='green', accelerator='F9')
 
         # 2 语言菜单
         self.lng_menu = Menu(self.menu, tearoff=False)
@@ -94,6 +95,7 @@ class AppMini(Tk):
         self.translate_ready = False  # 翻译准备好了：1、鼠标移动了然后放开了 2、双击鼠标
         self.press_alt_time = None  # 按下翻译键盘的时间
         self.click_time = None  # 鼠标左键点击时间
+        self.click_pos = None  # 鼠标点击位置
         # 监听器
         self.mouse_listener = None
         self.keyboard_listener = None
@@ -142,6 +144,7 @@ class AppMini(Tk):
     def fast_work(self):
         while self.fast_on_off_val.get() and self.on_off_val.get():
             if self.translate_ready:
+                time.sleep(0.3)
                 self.process()
 
     # ########## 监听函数 ##########
@@ -150,8 +153,11 @@ class AppMini(Tk):
         # print(f"鼠标{btn}键在({x}, {y})处{'按下' if is_press else '松开'}")
         if str(btn) == 'Button.left':
             # 双击选择
-            if self.click_time is not None and time.time() - self.click_time < 0.4 and time.time() - self.click_time > 0.1:
+            if self.click_time is not None \
+                    and 0.4 > time.time() - self.click_time > 0.1 \
+                    and self.mouse_move_judge():
                 self.translate_ready = True
+                print(1)
             # 按下
             if is_press:
                 self.ms_pressed = True
@@ -162,6 +168,7 @@ class AppMini(Tk):
                 self.ms_pressed = False
                 self.ms_pressed_and_moved = False
                 self.click_time = time.time()
+                self.click_pos = self.mouse_controller.position
 
     # 鼠标移动
     def on_move(self, x, y):
@@ -176,8 +183,13 @@ class AppMini(Tk):
         # print(f"你松开了{key.char if hasattr(key, 'char') else key.name}键")
         if self.translate_ready and key in short_cut:
             if self.press_alt_time is not None and time.time() - self.press_alt_time < 0.5 and time.time() - self.press_alt_time > 0.1:
+                self.press_alt_time = None
                 self.process()
             self.press_alt_time = time.time()
+        if key == short_cut_fast_model_on_off:
+            self.fast_on_off_val.set(not self.fast_on_off_val.get())
+            if self.fast_on_off_val.get():
+                self.start_fast_model()
 
     def process(self):
         self.translate_ready = False
@@ -226,6 +238,7 @@ class AppMini(Tk):
         utils.recovery_clipboard(self, self.org_clipboard_text)  # 还原由笑翻mini调用ctrl+c造成的剪切板内容垃圾
         text = text.strip().replace('\n', ' ') if self.line_on_off_val.get() else text
         if len(text) == 0:
+            self.update_text('Axiao：你看你叫我翻译的是什么东西？')
             return
         try:
             result = translate.translate(text, self.lng_t_val.get(), self.lng_s_val.get())
@@ -266,6 +279,9 @@ class AppMini(Tk):
             self.clipboard_clear()
             self.clipboard_append(result)
 
+    def mouse_move_judge(self):
+        pos = self.mouse_controller.position
+        return abs(pos[0] - self.click_pos[0]) < 3 and abs(pos[1] - self.click_pos[1]) < 3
     # ##########check bottom函数##########
     # 翻译总开关
     def on_off(self):
