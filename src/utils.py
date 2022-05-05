@@ -29,11 +29,11 @@ def cut_sentences(content):
 
 # 动态获取窗口长度
 def adapt_size(text):
-    widths = ['200', '500', '650']
+    widths = ['200', '400', '650']
     if len(text) > 200:
         return widths[2], str((int((len(text)-text.count('/n'))/32) + text.count('/n'))*16 + 40)
     elif len(text) > 10:
-        return widths[1], str((int((len(text)-text.count('/n'))/25) + text.count('/n'))*20 + 40)
+        return widths[1], str((int((len(text)-text.count('/n'))/20) + text.count('/n'))*20 + 40)
     else:
         return widths[0], str(60)
 
