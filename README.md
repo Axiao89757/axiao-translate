@@ -38,4 +38,7 @@ pyinstaller ./src/mini/main_mini.py -i ./src/resources/icon.ico -w -n 笑翻 -F
 -[x] 笑翻mini大小调整优化
 -[x] 笑翻mini提供译后自动复制开关
 -[x] 笑翻mini翻译异常捕获
+-[ ] 大量文字时翻译不了
+-[ ] 看能不能做铺满整个窗口，不然太蠢了
+-[ ] 花姐说有闪退的情况
 
