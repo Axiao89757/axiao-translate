@@ -41,4 +41,5 @@ pyinstaller ./src/mini/main_mini.py -i ./src/resources/icon.ico -w -n 笑翻 -F
 -[ ] 大量文字时翻译不了
 -[ ] 看能不能做铺满整个窗口，不然太蠢了
 -[ ] 据说有闪退的情况
+-[ ] 拖动窗口与翻译准备冲突，可以通过判断是否选择了内容来区分
 
