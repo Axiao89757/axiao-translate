@@ -40,5 +40,5 @@ pyinstaller ./src/mini/main_mini.py -i ./src/resources/icon.ico -w -n 笑翻 -F
 -[x] 笑翻mini翻译异常捕获
 -[ ] 大量文字时翻译不了
 -[ ] 看能不能做铺满整个窗口，不然太蠢了
--[ ] 花姐说有闪退的情况
+-[ ] 据说有闪退的情况
 
