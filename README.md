@@ -19,6 +19,7 @@ pyinstaller ./src/mini/main_mini.py -i ./src/resources/icon.ico -w -n 笑翻 -F
 ```
 ## bug记录
 ### 共同
+-[ ] 无法在福昕pdf软件使用
 ### 笑翻
 -[ ] 逐行分析，i.e.解析错误
 ### 笑翻mini
@@ -31,15 +32,16 @@ pyinstaller ./src/mini/main_mini.py -i ./src/resources/icon.ico -w -n 笑翻 -F
 ### 综合
 
 ### 笑翻mini
--[ ] 笑翻mini关闭or退出缩小至系统托盘，参考https://blog.csdn.net/wodeyan001/article/details/82497564
 -[x] 笑翻mini设置快速翻译模式，即选择完词语则马上翻译，支持快捷键F9
 -[x] 笑翻mini增加多语言翻译
--[x] 笑翻mini通过控制鼠标点击弹窗，即可完成弹出弹窗并且聚焦在笑翻上
+-[x] 笑翻mini通过控制鼠标点击弹窗，即可完成弹出弹窗并且聚焦在笑翻上发（会出现闪退），已经解决！！！参考https://codeantenna.com/a/clgh4ou6Jb
 -[x] 笑翻mini大小调整优化
 -[x] 笑翻mini提供译后自动复制开关
 -[x] 笑翻mini翻译异常捕获
+-[x] 看能不能做铺满整个窗口，不然太蠢了
+-[x] 据说有闪退的情况
+-[x] 拖动窗口与翻译准备冲突，可以通过判断是否选择了内容来区分
+-[x] 鼠标拖动设置防抖
+-[ ] 笑翻mini关闭or退出缩小至系统托盘，参考https://blog.csdn.net/wodeyan001/article/details/82497564
 -[ ] 大量文字时翻译不了
--[ ] 看能不能做铺满整个窗口，不然太蠢了
--[ ] 据说有闪退的情况
--[ ] 拖动窗口与翻译准备冲突，可以通过判断是否选择了内容来区分
 

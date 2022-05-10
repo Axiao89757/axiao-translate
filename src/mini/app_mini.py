@@ -48,6 +48,11 @@ class AppMini(Tk):
         self.setting_menu.add_checkbutton(label='快速模式', variable=self.fast_on_off_val, onvalue=True, offvalue=False,
                                           command=self.fast_on_off, selectcolor='green', accelerator='F9')
 
+        # 1.5. 置顶开关
+        self.top_on_off_val = BooleanVar()
+        self.top_on_off_val.set(False)
+        self.setting_menu.add_checkbutton(label='置顶', variable=self.top_on_off_val, onvalue=True, offvalue=False, command=self.top_on_off)
+
         # 2 语言菜单
         self.lng_menu = Menu(self.menu, tearoff=False)
         # 2.1 源语言
@@ -79,11 +84,11 @@ class AppMini(Tk):
 
         self.config(menu=self.menu)
 
+        # 文本框
+        self.t_ed = Text(self.f_ed, font=("Times New Roman", 12))
+
         # 滑条
         self.scl_ed = Scrollbar(self.f_ed)
-
-        # 文本框
-        self.t_ed = Text(self.f_ed, height=30, font=("Times New Roman", 12))
 
         # 配置
         self.set_window()
@@ -96,6 +101,9 @@ class AppMini(Tk):
         self.press_alt_time = None  # 按下翻译键盘的时间
         self.click_time = None  # 鼠标左键点击时间
         self.click_pos = None  # 鼠标点击位置
+        self.click_pos2 = None  # 鼠标点击位置2
+        self.win_pos_x = None  # 窗口位置 x
+        self.win_pos_y = None  # 窗口位置 y
         # 监听器
         self.mouse_listener = None
         self.keyboard_listener = None
@@ -115,16 +123,18 @@ class AppMini(Tk):
         tmp.close()
         self.iconbitmap("tmp.ico")
         os.remove("tmp.ico")
-        self.state('iconic')
 
-        self.f_ed.pack(expand=1)
+        self.f_ed.pack(fill=BOTH, expand=YES)
+
+        if self.top_on_off_val.get():
+            self.wm_attributes('-topmost', 1)
 
     def set_content(self):
         # 译文文本框
         self.scl_ed.config(command=self.t_ed.yview)
         self.t_ed.config(yscrollcommand=self.scl_ed.set)
         self.scl_ed.pack(side=RIGHT, fill=Y)
-        self.t_ed.pack(expand=1)
+        self.t_ed.pack(fill=BOTH, expand=YES, padx=(6, 0), pady=(0, 3))
 
     def set_listeners(self):
         self.set_mouse_listener()
@@ -143,8 +153,8 @@ class AppMini(Tk):
 
     def fast_work(self):
         while self.fast_on_off_val.get() and self.on_off_val.get():
+            time.sleep(0.1)
             if self.translate_ready:
-                time.sleep(0.3)
                 self.process()
 
     # ########## 监听函数 ##########
@@ -160,9 +170,12 @@ class AppMini(Tk):
             # 按下
             if is_press:
                 self.ms_pressed = True
+                self.win_pos_x = self.winfo_x()
+                self.win_pos_y = self.winfo_y()
+                self.click_pos2 = self.mouse_controller.position
             # 鼠标抬起选择
             if not is_press:
-                if self.ms_pressed_and_moved:
+                if self.ms_pressed_and_moved and self.mouse_move_judge2():
                     self.translate_ready = True
                 self.ms_pressed = False
                 self.ms_pressed_and_moved = False
@@ -192,6 +205,8 @@ class AppMini(Tk):
 
     def process(self):
         self.translate_ready = False
+        if self.win_pos_x != self.winfo_x() or self.win_pos_y != self.winfo_y():  # 区分拖动的是窗口还是选择文字
+            return
         try:
             self.org_clipboard_text = self.clipboard_get()  # 保存原来的剪切板内容
         except TclError:
@@ -227,18 +242,24 @@ class AppMini(Tk):
         self.t_ed.insert(END, text_ed)
 
     def translate(self):
+        try:
+            text = self.clipboard_get()
+            text = text.strip().replace('\n', ' ') if self.line_on_off_val.get() else text
+            if len(text) == 0:
+                self.update_text('Axiao：你看你叫我翻译的是什么东西？')
+                return
+        except:
+            text = "Axiao：请先复制一下任意文本"
         loading = '翻译中……'
         self.update_text(loading)
         self.pop_win()
-        self.locate(loading, relocate=True)
-        text = self.clipboard_get()
+        if not self.top_on_off_val.get():
+            self.locate(loading, relocate=True)
         utils.recovery_clipboard(self, self.org_clipboard_text)  # 还原由笑翻mini调用ctrl+c造成的剪切板内容垃圾
-        text = text.strip().replace('\n', ' ') if self.line_on_off_val.get() else text
-        if len(text) == 0:
-            self.update_text('Axiao：你看你叫我翻译的是什么东西？')
-            return
         try:
+            print(text)
             result = translate.translate(text, self.lng_t_val.get(), self.lng_s_val.get())
+            print(result)
         except BaseException:
             self.update_text('网络异常')
         else:
@@ -249,7 +270,10 @@ class AppMini(Tk):
     def pop_win(self):
         self.state('normal')
         self.wm_attributes('-topmost', 1)
-        self.wm_attributes('-topmost', 0)
+        # 聚焦到笑翻mini上来
+        self.after(1, lambda: self.focus_force())
+        if not self.top_on_off_val.get():
+            self.wm_attributes('-topmost', 0)
 
     def locate(self, text, relocate=False):
         padding = 20
@@ -261,15 +285,8 @@ class AppMini(Tk):
         x = min(max(padding, x), w_width - int(int(size[0]) / 2) - padding)
         y = pos[1] + 20
         y = min(max(padding, y), w_height - int(size[1]) - 5 * padding)
-        print('int(size[0]): ', int(size[0]))
-        print('int(size[1]): ', int(size[1]))
-        print('x: ', x)
-        print('y: ', y)
-        if relocate:
+        if relocate and not self.top_on_off_val.get():
             self.geometry('x'.join(size) + '+' + str(x) + '+' + str(y))
-            # 聚焦到笑翻mini上来
-            self.mouse_controller.position = (x + 30, y + 10)  # 移动鼠标
-            self.mouse_controller.click(mouse.Button.left, 1)  # 点击左键
         else:
             self.geometry('x'.join(size))
 
@@ -292,6 +309,9 @@ class AppMini(Tk):
     def mouse_move_judge(self):
         pos = self.mouse_controller.position
         return abs(pos[0] - self.click_pos[0]) < 3 and abs(pos[1] - self.click_pos[1]) < 3
+
+    def mouse_move_judge2(self):
+        return abs(self.mouse_controller.position[0] - self.click_pos2[0]) > 10 or abs(self.mouse_controller.position[1] - self.click_pos2[1]) > 10
 
     # ##########check bottom函数##########
     # 翻译总开关
@@ -317,6 +337,15 @@ class AppMini(Tk):
     def fast_on_off(self):
         if self.fast_on_off_val.get():
             self.start_fast_model()
+
+    # 置顶开关
+    def top_on_off(self):
+        if self.top_on_off_val.get():
+            self.wm_attributes('-topmost', 1)
+            # 聚焦到笑翻mini上来
+            self.after(1, lambda: self.focus_force())
+        else:
+            self.wm_attributes('-topmost', 0)
 
 # =============== 菜单回调
 #     def on_closing(self):

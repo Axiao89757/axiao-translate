@@ -30,12 +30,26 @@ def cut_sentences(content):
 # 动态获取窗口长度
 def adapt_size(text):
     widths = ['200', '400', '650']
-    if len(text) > 200:
-        return widths[2], str((int((len(text)-text.count('/n'))/32) + text.count('/n'))*16 + 40)
-    elif len(text) > 10:
-        return widths[1], str((int((len(text)-text.count('/n'))/20) + text.count('/n'))*20 + 40)
+    if count_text(text) > 200:
+        return widths[2], str((int((count_text(text)-text.count('/n'))/32) + text.count('/n'))*16 + 40)
+    elif count_text(text) > 10:
+        return widths[1], str((int((count_text(text)-text.count('/n'))/20) + text.count('/n'))*20 + 40)
     else:
         return widths[0], str(60)
+
+# 计算字符串长度，4个非中文计为一个中文字符
+def count_text(text):
+    count = 0
+    en_cont = 0
+    for c in text:
+        if not u'\u4e00' <= c <= u'\u9fff':
+            en_cont += 1
+            if en_cont == 3:
+                count += 1
+                en_cont = 0
+        else:
+            count += 1
+    return count
 
 
 
