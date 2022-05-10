@@ -5,10 +5,12 @@ import translate, utils
 from pynput import keyboard, mouse
 from common import icon
 from threading import Thread
+import webbrowser
 
 short_cut = [keyboard.Key.ctrl_l, keyboard.Key.ctrl_r]
 short_cut_on_off = keyboard.Key.f8
 short_cut_fast_model_on_off = keyboard.Key.f9
+version = '3.1'
 
 
 class AppMini(Tk):
@@ -20,7 +22,7 @@ class AppMini(Tk):
         self.f_ed = Frame(self)
 
         # 菜单
-        self.menu = Menu(self)
+        self.menu = Menu(self, activeforeground='red')
         # 1 设置菜单
         self.setting_menu = Menu(self.menu, tearoff=False)
         # 1.1 翻译开关
@@ -29,7 +31,11 @@ class AppMini(Tk):
         self.setting_menu.add_checkbutton(variable=self.on_off_val, label='开关', onvalue=True, offvalue=False,
                                           command=self.on_off, selectcolor='green', accelerator='F8')
         self.setting_menu.add_separator()
-        # 1.2 自动复制
+        # 1.2 置顶开关
+        self.top_on_off_val = BooleanVar()
+        self.top_on_off_val.set(False)
+        self.setting_menu.add_checkbutton(label='置顶', variable=self.top_on_off_val, onvalue=True, offvalue=False, command=self.top_on_off)
+        # 1.3 自动复制
         self.auto_copy_menu = Menu(self.setting_menu, tearoff=False)
         self.copy_on_off_val = IntVar()
         self.copy_on_off_val.set(0)
@@ -37,21 +43,16 @@ class AppMini(Tk):
         self.auto_copy_menu.add_radiobutton(label="原文", variable=self.copy_on_off_val, value=1, selectcolor='green')
         self.auto_copy_menu.add_radiobutton(label="译文", variable=self.copy_on_off_val, value=2, selectcolor='green')
         self.setting_menu.add_cascade(label='自动复制', menu=self.auto_copy_menu)
-        # 1.3 删除换行
+        # 1.4 删除换行
         self.line_on_off_val = BooleanVar()
         self.line_on_off_val.set(True)
         self.setting_menu.add_checkbutton(label='去除换行', variable=self.line_on_off_val, onvalue=True, offvalue=False,
                                           command=self.line_on_off, selectcolor='green')
-        # 1.4 快速翻译模式
+        # 1.5 快速翻译模式
         self.fast_on_off_val = BooleanVar()
         self.fast_on_off_val.set(False)
         self.setting_menu.add_checkbutton(label='快速模式', variable=self.fast_on_off_val, onvalue=True, offvalue=False,
                                           command=self.fast_on_off, selectcolor='green', accelerator='F9')
-
-        # 1.5. 置顶开关
-        self.top_on_off_val = BooleanVar()
-        self.top_on_off_val.set(False)
-        self.setting_menu.add_checkbutton(label='置顶', variable=self.top_on_off_val, onvalue=True, offvalue=False, command=self.top_on_off)
 
         # 2 语言菜单
         self.lng_menu = Menu(self.menu, tearoff=False)
@@ -77,10 +78,18 @@ class AppMini(Tk):
         self.lng_t_menu.add_radiobutton(label="法语", variable=self.lng_t_val, value='fr')
         self.lng_t_menu.add_radiobutton(label="韩语", variable=self.lng_t_val, value='ko')
 
+        # 3. 关于
+        self.about_menu = Menu(self.menu, tearoff=False)
+        self.about_menu.add_command(label='Github', command=self.github_homepage)
+        self.about_menu.add_command(label='版本', command=self.all_version)
+        self.about_menu.add_command(label='作者', command=self.author)
+        self.about_menu.add_command(label='视频', command=self.bilibili)
+
         self.lng_menu.add_cascade(label='原文', menu=self.lng_s_menu)
         self.lng_menu.add_cascade(label='译文', menu=self.lng_t_menu)
         self.menu.add_cascade(label='设置', menu=self.setting_menu)
         self.menu.add_cascade(label='语种', menu=self.lng_menu)
+        self.menu.add_cascade(label='关于', menu=self.about_menu)
 
         self.config(menu=self.menu)
 
@@ -117,7 +126,7 @@ class AppMini(Tk):
 
     def set_window(self):
         self.title('笑翻mini')
-        self.geometry('300x200')
+        self.geometry('270x65')
         tmp = open("tmp.ico", "wb+")
         tmp.write(base64.b64decode(icon.img))
         tmp.close()
@@ -135,6 +144,8 @@ class AppMini(Tk):
         self.t_ed.config(yscrollcommand=self.scl_ed.set)
         self.scl_ed.pack(side=RIGHT, fill=Y)
         self.t_ed.pack(fill=BOTH, expand=YES, padx=(6, 0), pady=(0, 3))
+
+        self.update_text(' Axiao：\n\t双击 【ctrl】 翻译')
 
     def set_listeners(self):
         self.set_mouse_listener()
@@ -346,6 +357,22 @@ class AppMini(Tk):
             self.after(1, lambda: self.focus_force())
         else:
             self.wm_attributes('-topmost', 0)
+
+    def github_homepage(self):
+        webbrowser.open('https://github.com/Axiao89757/axiao-translate')
+
+    def all_version(self):
+        self.update_text('名称：笑翻mini \n 当前版本：' + version)
+        self.top_on_off_val.set(True)
+        self.pop_win()
+        webbrowser.open('https://github.com/Axiao89757/axiao-translate/releases')
+
+    def author(self):
+        webbrowser.open('https://space.bilibili.com/50390472')
+
+    def bilibili(self):
+        webbrowser.open('https://www.bilibili.com/video/BV1ZA4y1Q7Pw?t=165.1')
+
 
 # =============== 菜单回调
 #     def on_closing(self):
