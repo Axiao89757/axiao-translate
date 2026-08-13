@@ -1,3 +1,5 @@
+
+
 # 笑翻
 一个高效的论文即时翻译工具
 
@@ -5,7 +7,7 @@
 1. 综合版本：笑翻.exe
 2. mini版本：笑翻mini.exe 
    > 1. 双击exe直接使用
-   > 2. 选中文字，使用双击`ctrl`即可翻译英语
+   > 2. 选中文字，使用双击`ctrl`即可进行翻译
    > 3. 可控制开关、可控制是否格式化文本（去除换行）
    > 4. 快捷键F8控制笑翻mini的开关
 
@@ -44,4 +46,3 @@ pyinstaller ./src/mini/main_mini.py -i ./src/resources/icon.ico -w -n 笑翻 -F
 -[x] 鼠标拖动设置防抖
 -[ ] 笑翻mini关闭or退出缩小至系统托盘，参考https://blog.csdn.net/wodeyan001/article/details/82497564
 -[ ] 大量文字时翻译不了
-
